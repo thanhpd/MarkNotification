@@ -1,15 +1,21 @@
 /**
  * Created by thanh.phan on 6/29/2015.
  */
-var mysql      = require('mysql');
+var express   =    require("express");
+var mysql     =    require('mysql');
+var app       =    express();
+var Course = require("./course");
+var CourseList = require("./courselist");
+
+var myList = new CourseList();
 
 var pool = mysql.createPool({
     connectionLimit: 100,
     host: 'localhost',
-    user: 'thanhpd1',
-    password: '02121994',
+    user: 'root',
+    password: 'iamXcod94',
     database: 'mark',
-    debug: true
+    debug: false
 });
 
 function handle_database(req,res) {
@@ -25,7 +31,12 @@ function handle_database(req,res) {
         connection.query("select * from courselist", function(err, rows){
             connection.release();
             if(!err) {
-                res.json(rows);
+
+                for(var i = 0; i < rows.length; i++) {
+                    myList.addCourseByValue(rows[i].id, rows[i].idCourse, rows[i].courseName, rows[i].credit, rows[i].lecturer);
+                }
+                //var _jsonString = a.body;
+                //var _obj = json.parse(_jsonString);
             }
         });
 
@@ -37,3 +48,9 @@ function handle_database(req,res) {
 }
 
 exports.handle_database = handle_database;
+
+app.get("/",function(req,res){-
+    handle_database(req,res);
+});
+
+app.listen(3000);
