@@ -12,7 +12,9 @@ CourseList.prototype.addCourseByCourse = function(_course) {
 };
 
 CourseList.prototype.addCourseByValue = function(_id, _idCourse, _courseName, _credit, _lecturer) {
-    this.myList.push(new Course(_id, _idCourse, _courseName, _credit, _lecturer));
+    var c = new Course();
+    c.createCourse(_id, _idCourse, _courseName, _credit, _lecturer);
+    this.myList.push(c);
 };
 
 CourseList.prototype.getCourseList = function() {

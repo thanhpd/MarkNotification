@@ -1,11 +1,8 @@
 /**
  * Created by thanh.phan on 6/29/2015.
  */
-var express   =    require("express");
 var mysql     =    require('mysql');
-var app       =    express();
-var Course = require("./course");
-var CourseList = require("./courselist");
+var CourseList = require('./courselist');
 
 var myList = new CourseList();
 
@@ -31,12 +28,15 @@ function handle_database(req,res) {
         connection.query("select * from courselist", function(err, rows){
             connection.release();
             if(!err) {
-
-                for(var i = 0; i < rows.length; i++) {
-                    myList.addCourseByValue(rows[i].id, rows[i].idCourse, rows[i].courseName, rows[i].credit, rows[i].lecturer);
+                //res.json(rows);
+                for (var i = 0; i < rows.length; i++) {
+                    myList.addCourseByValue(rows[i].id, rows[i].idcourse, rows[i].coursename, rows[i].credit, rows[i].lecturer);
                 }
-                //var _jsonString = a.body;
-                //var _obj = json.parse(_jsonString);
+                //var a = JSON.stringify(rows);
+                //console.log(a);
+                //console.log(myList);
+                console.log(rows);
+                return rows;
             }
         });
 
@@ -47,10 +47,4 @@ function handle_database(req,res) {
     });
 }
 
-exports.handle_database = handle_database;
-
-app.get("/",function(req,res){-
-    handle_database(req,res);
-});
-
-app.listen(3000);
+module.exports = handle_database;

@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var db_handler = exports.handle_database;
+var dbConnector = require('../dbconnector');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Mark Notification | VNU,H - UET' });
+  var results = dbConnector(req, res);
+  console.log(results);
+  res.render('index',{ response: results, title: 'Mark Notification | VNU,H - UET'});
 
 });
 
